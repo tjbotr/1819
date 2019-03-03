@@ -1,4 +1,0 @@
-If you're not familiar, GitHub is a version control tool used for collaborative programming projects.
-To verify that you can make additions to the team code, clone the 1819 repository to your computer, type your name below, and add this change to the repository by making a commit to the master branch.
-Use an IDE that supports GitHub or download the GitHub Desktop app (https://desktop.github.com/) to do this.
-
