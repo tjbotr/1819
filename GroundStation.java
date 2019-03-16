@@ -31,15 +31,15 @@ public class GroundStation
 		myXBeeDevice.close();
 		byte[] data = xbeeMessage.getData();
 		System.out.println(data);
-//		float pressure = data[0];
-//		float altitude = data[1];
-//		float temperature = data[2];
-//		float xPosition = data[3];
-//		float yPosition = data[4];
-//		float zPosition = data[5];
-//		float xAcceleration = data[6];
-//		float yAcceleration = data[7];
-//		float zAcceleration = data[8];
-//		float coordinates = data[9];
+		float pressure = data[0];
+		float altitude = data[1];
+		float temperature = data[2];
+		float xPosition = data[3];
+		float yPosition = data[4];
+		float zPosition = data[5];
+		float xAcceleration = data[6];
+		float yAcceleration = data[7];
+		float zAcceleration = data[8];
+		float coordinates = data[9];
 	}
 }
