@@ -27,6 +27,8 @@ SoftwareSerial XBee(2, 3); // RX, TX
 // XBee's DIN (RX) is connected to pin 11 (Arduino's Software TX)
 //SoftwareSerial XBee(10, 11); // RX, TX
 
+//NOTE: This code allows to Xbee radios to communicate with each other with one connected with the Arduino and 
+// another connected to a port and configured using XCTU.
 void setup()
 {
   // Set up both ports at 9600 baud. This value is most important
