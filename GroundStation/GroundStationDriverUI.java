@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author bala
+ * @author suryabala
  */
 public class GroundStationDriverUI extends javax.swing.JFrame {
 
