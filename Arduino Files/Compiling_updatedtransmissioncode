@@ -136,8 +136,8 @@ void loop() {
       payload[5] = zVal;
       payload[6] = xAccel;
       payload[7] = yAccel;
-      payload[7] = zAccel;
-      payload[7] = incoming;
+      payload[8] = zAccel;
+      payload[9] = incoming;
       
       xbee.send(tx);
 
