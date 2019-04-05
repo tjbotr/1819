@@ -18,12 +18,10 @@ SoftwareSerial softserialxbee(2, 3); // RX, TX
 float pascals;
 float altm;
 float tempC;
-//unsigned int xVal;
-//unsigned int yVal;
-//unsigned int zVal;
-double xAccel;
-double yAccel;
-double zAccel;
+float xAccel;
+float yAccel;
+float zAccel;
+float totalAccel;
 //byte incoming;
 //byte gps;
 
@@ -68,10 +66,15 @@ void loop() {
 //Get acceleration from accelerometer
     sensors_event_t event; 
     lis.getEvent(&event);
-    Serial.print("\t\tX: "); Serial.print(event.acceleration.x);
-    Serial.print(" \tY: "); Serial.print(event.acceleration.y); 
-    Serial.print(" \tZ: "); Serial.print(event.acceleration.z); 
+    xAccel=(float) event.acceleration.x;
+    Serial.print("\t\tX: "); Serial.print(xAccel);
+    yAccel=event.acceleration.y;
+    Serial.print(" \tY: "); Serial.print(yAccel); 
+    zAccel=event.acceleration.z;
+    Serial.print(" \tZ: "); Serial.print(zAccel); 
     Serial.println(" m/s^2 ");
+    totalAccel=sqrt(pow(xAccel, 2)+pow(yAccel, 2)+pow(zAccel, 2));
+    Serial.println(totalAccel);
 
 //    while (myI2CGPS.available()) //available() returns the number of new bytes available from the GPS module
 //      {
