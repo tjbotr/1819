@@ -59,7 +59,7 @@ void loop() {
   incoming = myI2CGPS.read();
 
   byte dataToSend[] = {pascals, altm, tempC, xVal, yVal, zVal, xAccel, yAccel, zAccel};
-  Xbee.write(dataToSend);
+  //Xbee.write(dataToSend);
 
   /**
   //myFile.print("Pressure: "); myFile.println(pascals);
