@@ -29,6 +29,7 @@
   boolean manualCameraOn=false;
   int cameraDelay=0;
   const int cameraPin = 6;
+  boolean manualArmCommandOverride=false; //Set this to true to debug the payload code without a ground station
 
 //Initialize sensor related objects
   Adafruit_MPL3115A2 baro = Adafruit_MPL3115A2();
@@ -36,7 +37,7 @@
   I2CGPS myI2CGPS;
   TinyGPSPlus gps; //Declare gps object
 
-//Initialize Xbee related stuff
+//Initialize Xbee transmit related stuff
   XBee xbee = XBee();
   uint8_t payload[] = {(byte)packetCount, (byte)altm, (byte)totalAccel, (byte)totalVelocity,(byte)pitotSpeed, (byte)latitude, (byte)longitude, (byte)cameraOn, (byte)cameraAllowedToBeEnabled, (byte)cameraDelay};
   Tx16Request tx = Tx16Request(0x0, payload, sizeof(payload)); // 16-bit addressing: Enter address of remote XBee, typically the coordinator
@@ -45,6 +46,12 @@
   unsigned long previousMillis = 0;
   unsigned long currentMillis;
 
+//Initialize XBee receive related stuff
+  XBeeResponse response = XBeeResponse();
+  Rx16Response rx16 = Rx16Response();
+  Rx64Response rx64 = Rx64Response();
+  uint8_t data = 0;
+  
   
 void setup() {
   //Initialize serial connection to computer for debugging
@@ -79,7 +86,35 @@ void setup() {
   //  Serial.println("GPS module found!");
 
   //Wait for arm command from ground station to continue
-    //<TODO>
+    while(!manualArmCommandOverride)
+    {
+      xbee.readPacket();
+      if (xbee.getResponse().isAvailable()) {
+        // got something
+        if (xbee.getResponse().getApiId() == RX_16_RESPONSE || xbee.getResponse().getApiId() == RX_64_RESPONSE) 
+        {
+          // got a rx packet
+          if (xbee.getResponse().getApiId() == RX_16_RESPONSE) {
+            xbee.getResponse().getRx16Response(rx16);
+            data = rx16.getData(0);
+          } else {
+            xbee.getResponse().getRx64Response(rx64);
+            data = rx64.getData(0);
+          }
+        } else {
+          // not something we were expecting
+          Serial.println("Did not get a 16 or 64 response");    
+        }
+      } else if (xbee.getResponse().isError()) {
+        Serial.print("Error reading packet.  Error code: ");  
+        Serial.println(xbee.getResponse().getErrorCode());
+      }
+      
+     if(data==1){
+      break;
+     }
+    }
+    
 }
 
 void loop() {
