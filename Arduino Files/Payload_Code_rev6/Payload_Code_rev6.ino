@@ -21,8 +21,8 @@
   float yVelocity;
   float zVelocity;
   float totalVelocity;
-  float latitude;
-  float longitude;
+  float latitude=0;
+  float longitude=0;
   int pitotSpeed=0;
   boolean cameraOn=false;
   boolean cameraAllowedToBeEnabled=true;
@@ -140,7 +140,7 @@ void loop() {
       Serial.println(" m/s^2 ");
       totalAccel=sqrt(pow(xAccel, 2)+pow(yAccel, 2)+pow(zAccel, 2));
       Serial.print("Total Acceleration: "); Serial.print(totalAccel); Serial.println(" m/s^2");
-    //Add totalVelocity ability using the BNO055
+    //Add totalVelocity ability using raw data commands for the BNO055
   
   //Get latitude and longitude from GPS
   //    while (myI2CGPS.available()) //available() returns the number of new bytes available from the GPS module
