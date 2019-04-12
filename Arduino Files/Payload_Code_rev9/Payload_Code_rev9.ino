@@ -24,7 +24,7 @@
   boolean manualCameraOn=false;
   int cameraDelay=0;
   const int cameraPin = 6;
-  boolean manualArmCommandOverride=false; //Set this to true to debug the payload code without a ground station
+  boolean manualArmCommandOverride=true; //Set this to true to debug the payload code without a ground station
 
 //Initialize sensor related objects
   Adafruit_MPL3115A2 baro = Adafruit_MPL3115A2();
@@ -82,12 +82,12 @@ void setup() {
     digitalWrite(cameraPin, HIGH);
   
   //Initialize GPS
-  //  if(myI2CGPS.begin() == false)
-  //  {
-  //    Serial.println("GPS module failed to respond. Please check wiring.");
-  //    while(1);
-  //  }
-  //  Serial.println("GPS module found!");
+    if(myI2CGPS.begin() == false)
+    {
+      Serial.println("GPS module failed to respond. Please check wiring.");
+      while(1);
+    }
+    Serial.println("GPS module found!");
 
   //Wait for arm command from ground station to continue
     while(!manualArmCommandOverride)
@@ -156,15 +156,15 @@ void loop() {
       Serial.print("Total Acceleration: "); Serial.print(totalAccel); Serial.println(" m/s^2");
   
   //Get latitude and longitude from GPS
-  //    while (myI2CGPS.available()) //available() returns the number of new bytes available from the GPS module
-  //      {
-  //        gps.encode(myI2CGPS.read()); //Feed the GPS parser
-  //      }
-  //    
-  //      if (gps.time.isUpdated()) //Check to see if new GPS info is available
-  //      {
-  //        displayInfo();
-  //      }
+      while (myI2CGPS.available()) //available() returns the number of new bytes available from the GPS module
+        {
+          gps.encode(myI2CGPS.read()); //Feed the GPS parser
+        }
+      
+        if (gps.time.isUpdated()) //Check to see if new GPS info is available
+        {
+          displayInfo();
+        }
   
   //Get speed from pitot tube
       Wire.beginTransmission(0x75);
@@ -185,7 +185,7 @@ void loop() {
       Serial.print("Pitot tube speed: "); Serial.print(pitotSpeed); Serial.println("MPH");
 
   //Camera enable and disable code
-      if(cameraAllowedToBeEnabled==true && cameraOn==false && (totalAccel>30 || manualCameraOn==true))//Turn on camera if it is off and velocity is greater than 15m/s
+      if(cameraAllowedToBeEnabled==true && cameraOn==false && (totalAccel>10 || manualCameraOn==true))//Turn on camera if it is off and velocity is greater than 15m/s
       {
         digitalWrite(cameraPin, LOW);
         delay(700);
@@ -199,7 +199,7 @@ void loop() {
         cameraDelay+=1000;
         Serial.println("Incremented camera delay by 1 second");
       }
-      else if(cameraOn==true && cameraDelay>=15000)//Turn off camera if it is on and 15 second delay has elapsed
+      else if(cameraOn==true && cameraDelay>=10000 && totalAccel<0.5)//Turn off camera if it is on and 15 second delay has elapsed
       {
         digitalWrite(cameraPin, LOW);
         delay(700);
