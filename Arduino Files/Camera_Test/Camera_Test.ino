@@ -4,7 +4,7 @@ void setup() {
   Serial.begin(9600);
   pinMode(cameraPin, OUTPUT);
   digitalWrite(cameraPin, HIGH);
-  delay(200);
+  delay(10000);
 }
 
 void loop() {
@@ -13,7 +13,7 @@ void loop() {
   
   Serial.println("Started recording");
   digitalWrite(cameraPin, HIGH);
-  delay(20000);
+  delay(5000);
   
   digitalWrite(cameraPin, LOW);
   delay(700);
